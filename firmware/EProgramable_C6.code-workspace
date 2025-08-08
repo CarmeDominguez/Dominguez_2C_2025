@@ -17,6 +17,12 @@
         },
         {
             "path": "./projects/x_template"
+        },
+        {
+            "path": "projects/guia1_ej2"
+        },
+        {
+            "path": "projects/1_blinking_switch_car"
         }
     ],
     "settings": {
