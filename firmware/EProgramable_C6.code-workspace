@@ -29,6 +29,12 @@
         },
         {
             "path": "projects/guia1_ej456"
+        },
+        {
+            "path": "projects/guia2_ej1"
+        },
+        {
+            "path": "projects/guia2_ej2"
         }
     ],
     "settings": {
@@ -81,7 +87,8 @@
             "ili9341.h": "c",
             "soc_caps.h": "c",
             "mpu6050.h": "c",
-            "i2c_mcu.h": "c"
+            "i2c_mcu.h": "c",
+            "cstdint": "c"
         },
     },
     "tasks": {
