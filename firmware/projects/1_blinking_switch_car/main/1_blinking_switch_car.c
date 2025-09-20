@@ -1,16 +1,14 @@
-/*! @mainpage Blinking switch
+/*! @mainpage Guia 1 - Ejercicio 2 - Blinking Switch Car
  *
- * \section genDesc General Description
- *
- * This example makes LED_1 and LED_2 blink if SWITCH_1 or SWITCH_2 are pressed.
+ * \section 
  *
  * @section changelog Changelog
  *
  * |   Date	    | Description                                    |
  * |:----------:|:-----------------------------------------------|
- * | 12/09/2023 | Document creation		                         |
+ * | 20/09/2025 | Document creation		                         |
  *
- * @author Albano Peñalva (albano.penalva@uner.edu.ar)
+ * @author Carmela Dominguez
  *
  */
 

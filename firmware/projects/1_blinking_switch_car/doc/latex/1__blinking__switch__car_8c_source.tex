@@ -1,0 +1,49 @@
+\doxysection{1\+\_\+blinking\+\_\+switch\+\_\+car.\+c}
+\hypertarget{1__blinking__switch__car_8c_source}{}\label{1__blinking__switch__car_8c_source}\index{C:/Users/carme/OneDrive/Desktop/cuarto/Electronica Programable/Repositorios/Dominguez\_2C\_2025/firmware/projects/1\_blinking\_switch\_car/main/1\_blinking\_switch\_car.c@{C:/Users/carme/OneDrive/Desktop/cuarto/Electronica Programable/Repositorios/Dominguez\_2C\_2025/firmware/projects/1\_blinking\_switch\_car/main/1\_blinking\_switch\_car.c}}
+\mbox{\hyperlink{1__blinking__switch__car_8c}{Ir a la documentación de este archivo.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00015}00015\ \textcolor{comment}{/*==================[inclusions]=============================================*/}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00019}00019\ \textcolor{preprocessor}{\#include\ "{}freertos/FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}freertos/task.h"{}}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}led.h"{}}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}switch.h"{}}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00023}00023\ \textcolor{comment}{/*==================[macros\ and\ definitions]=================================*/}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00024}\mbox{\hyperlink{1__blinking__switch__car_8c_a3df1b4cad09974bfc68858fad7cdc054}{00024}}\ \textcolor{preprocessor}{\#define\ CONFIG\_BLINK\_PERIOD\ 1000}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00025}00025\ \textcolor{comment}{/*==================[internal\ data\ definition]===============================*/}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00027}00027\ \textcolor{comment}{/*==================[internal\ functions\ declaration]=========================*/}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00029}00029\ \textcolor{comment}{/*==================[external\ functions\ definition]==========================*/}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00030}\mbox{\hyperlink{1__blinking__switch__car_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{00030}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{1__blinking__switch__car_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{app\_main}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00031}00031\ \ \ \ \ uint8\_t\ teclas;}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00032}00032\ \ \ \ \ LedsInit();}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00033}00033\ \ \ \ \ SwitchesInit();}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00034}00034\ \ \ \ \ \textcolor{keywordflow}{while}(1)\ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00035}00035\ \ \ \ \ \ \ \ \ teclas\ \ =\ SwitchesRead();}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(teclas)\{}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ SWITCH\_1:}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LedToggle(LED\_1);}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ SWITCH\_2:}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LedToggle(LED\_2);}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ (SWITCH\_1\ |\ SWITCH\_2):\ \ \textcolor{comment}{//\ el\ valor\ constante\ que\ representa\ ambos\ a\ la\ vez}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LedToggle(LED\_3);}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ vTaskDelay(\mbox{\hyperlink{1__blinking__switch__car_8c_a3df1b4cad09974bfc68858fad7cdc054}{CONFIG\_BLINK\_PERIOD}}\ /\ portTICK\_PERIOD\_MS);}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ ((teclas\ \&\ SWITCH\_1)\ \&\&\ (teclas\ \&\ SWITCH\_2))\ \{}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ LedToggle(LED\_3);}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ vTaskDelay(CONFIG\_BLINK\_PERIOD\ /\ portTICK\_PERIOD\_MS);\ \ \ otra\ opcion}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00054}00054\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{1__blinking__switch__car_8c_source_l00055}00055\ \}}
+
+\end{DoxyCode}
