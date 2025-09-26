@@ -33,18 +33,10 @@
 #include "hc_sr04.h"
 #include "lcditse0803.h"
 #include "switch.h"
+#include "timer_mcu.h"
+
 
 /*==================[macros and definitions]=================================*/
-// 1)Mostrar distancia medida utilizando los leds de la siguiente manera:
-
-//a) Si la distancia es menor a 10 cm, apagar todos los LEDs.
-//b) Si la distancia está entre 10 y 20 cm, encender el LED_1.
-//c) Si la distancia está entre 20 y 30 cm, encender el LED_2 y LED_1.
-//d) Si la distancia es mayor a 30 cm, encender el LED_3, LED_2 y LED_1.
-
-// 2) Mostrar la distancia medida en el display LCD de 3 dígitos.
-// 3) Usar TEC1 para activar y detener la medición.
-
 
 // Umbrales de distancia (en cm)
 #define DIST_MIN     10
@@ -55,19 +47,28 @@
 #define SENSOR_PERIOD_MS   500
 
 #define CONFIG_BLINK_PERIOD_LED_1 1000
+
+#define CONFIG_TIMER_US 1000000
 /*==================[internal data definition]===============================*/
 
 TaskHandle_t led_task_handle = NULL;
-TaskHandle_t switches_handle = NULL;
+
 
 /*==================[global variables]===============================*/
 volatile bool hold = false;  // Flag para pausar/reanudar medición
 volatile bool HCRS_ON = true;
+
 /*==================[internal functions declaration]=========================*/
+void FuncTimerA(void* param){
+    vTaskNotifyGiveFromISR(led_task_handle, pdFALSE);    /* Envía una notificación a la tarea asociada al LED_1 */
+}
+
 static void LedTask(void *pvParameter){
     while(true){
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);    /* La tarea espera en este punto hasta recibir una notificación */
+        
         if (!hold && HCRS_ON) {  
-		uint16_t distancia=HcSr04ReadDistanceInCentimeters();
+		    uint16_t distancia=HcSr04ReadDistanceInCentimeters();
 
         if (distancia < DIST_MIN) {
             LedOff(LED_1);
@@ -89,7 +90,7 @@ static void LedTask(void *pvParameter){
             LedOn(LED_2);
             LedOn(LED_3);
         }
-
+        
             // Mostrar distancia en el LCD
             LcdItsE0803Write(distancia);
         }
@@ -99,31 +100,24 @@ static void LedTask(void *pvParameter){
             LedOff(LED_3);
             LcdItsE0803Write(0);
         }
-
-        // Esperar un tiempo antes de la próxima iteración
-        vTaskDelay(pdMS_TO_TICKS(SENSOR_PERIOD_MS));
     }
 }
 
-static void Switches (void *pvParameter){
-    while(true){
-        uint8_t teclas = SwitchesRead();
 
-        switch(teclas){
-    		case SWITCH_2:
-                hold=true;
-    		break;
-    		case SWITCH_1:
-    			HCRS_ON=false;
-    		break;
-            case 0:
-                hold=false;
-                HCRS_ON=true;
-    		break;
-    }
-        // Anti-rebote simple
-        vTaskDelay(pdMS_TO_TICKS(100));
-}}
+static void Apagador(void *args) {
+    HCRS_ON = !HCRS_ON;
+}
+static void Mantenedor(void *args) {
+    hold = !hold;
+}
+
+timer_config_t timer_lector = {				
+    .timer   = TIMER_A,        
+    .period  = CONFIG_TIMER_US,     
+    .func_p  = FuncTimerA,   
+    .param_p = NULL            
+};
+
 
 /*==================[external functions definition]==========================*/
 void app_main(void){
@@ -132,9 +126,15 @@ void app_main(void){
 	HcSr04Init(GPIO_3, GPIO_2);
 	LcdItsE0803Init();
     SwitchesInit();
+    TimerInit(&timer_lector);
+    TimerStart(TIMER_A);
+
+
+     // Activar interrupciones de teclas
+    SwitchActivInt(SWITCH_1, Apagador, NULL);
+    SwitchActivInt(SWITCH_2, Mantenedor, NULL);
 
 	// Crear tareas
 	xTaskCreate(&LedTask, "LED_Task", 2048, NULL, 5, &led_task_handle);
-	xTaskCreate(&Switches, "SWITCHES", 2048, NULL, 5, &switches_handle);
 }
 /*==================[end of file]============================================*/

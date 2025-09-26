@@ -108,21 +108,14 @@ static void LedTask(void *pvParameter){
 static void Switches (void *pvParameter){
     while(true){
         uint8_t teclas = SwitchesRead();
-
         switch(teclas){
     		case SWITCH_2:
-                hold=true;
+                hold=!hold;
     		break;
     		case SWITCH_1:
-    			HCRS_ON=false;
-    		break;
-            case 0:
-                hold=false;
-                HCRS_ON=true;
+    			HCRS_ON=!HCRS_ON;
     		break;
     }
-        // Anti-rebote simple
-        vTaskDelay(pdMS_TO_TICKS(100));
 }}
 
 /*==================[external functions definition]==========================*/
