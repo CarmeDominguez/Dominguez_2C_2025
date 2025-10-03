@@ -46,10 +46,6 @@ void app_main(void){
 		
     	}
 		vTaskDelay(CONFIG_BLINK_PERIOD / portTICK_PERIOD_MS);
-		// if ((teclas & SWITCH_1) && (teclas & SWITCH_2)) {
-		// 	LedToggle(LED_3);
-		// 	vTaskDelay(CONFIG_BLINK_PERIOD / portTICK_PERIOD_MS);   otra opcion
-
-		// }
+	
 	}
 }

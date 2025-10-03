@@ -17,11 +17,11 @@
 /*==================[inclusions]=============================================*/
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include <stdbool.h> /*para true o false */
+#include "freertos/FreeRTOS.h" /*API de FreeRTOS (delays, tareas,etc)*/
+#include "freertos/task.h" /*API de FreeRTOS (delays, tareas,etc)*/
 #include "led.h"
-#include "switch.h"
+#include "switch.h" /*control de SW*/
 /*==================[macros and definitions]=================================*/
 #define CONFIG_BLINK_PERIOD 1000
 /*==================[internal data definition]===============================*/
@@ -30,14 +30,14 @@
 
 /*==================[external functions definition]==========================*/
 void app_main(void){
-	uint8_t teclas;
+	uint8_t teclas; //variable para guardar el estado de los SW (entera sin signo y de 8 bits)
 	LedsInit();
 	SwitchesInit();
     while(1)    {
-    	teclas  = SwitchesRead();
+    	teclas  = SwitchesRead(); //leo el estado de los SW
     	switch(teclas){
     		case SWITCH_1:
-    			LedToggle(LED_1);
+    			LedToggle(LED_1); //cambia el estado actual del led por el opuesto
     		break;
     		case SWITCH_2:
     			LedToggle(LED_2);

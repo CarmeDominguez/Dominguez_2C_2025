@@ -50,21 +50,21 @@ struct my_leds{
 
 
 
-void manejar_leds(struct my_leds *led){
-		switch (led->mode){
+void manejar_leds(struct my_leds *led){  //la funcion recibe un puntero a la estructura
+		switch (led->mode){ //elijo el campo de la estructura
 			case ON:
-				LedOn(led->n_led);
+				LedOn(led->n_led); //enciende el n_led
 			break;
 			case OFF:
 				LedOff(led->n_led);
 			break;
 			case TOGGLE:
 				int i;
-				for (i=1; i < (led->n_ciclos)*2; i++) {
-					LedToggle(led->n_led);
+				for (i=0; i < (led->n_ciclos)*2; i++) {
+					LedToggle(led->n_led); //cambia el estado actual del led por el opuesto
 					vTaskDelay(led->periodo / portTICK_PERIOD_MS);
 				}
-				LedOff(led->n_led);
+				LedOff(led->n_led); //apaga el led al finalizar los ciclos aun q no sean pares
 				break;
 			}		
 
@@ -73,17 +73,17 @@ void manejar_leds(struct my_leds *led){
 
 void app_main(void){
 	LedsInit();
-		struct my_leds led1 = {ON,LED_3,10,500};
-		manejar_leds(&led1);
+		struct my_leds leds = {ON,LED_3,10,500};
+		manejar_leds(&leds);
 
-		led1.mode = TOGGLE;
-		led1.n_led= LED_1;
-		led1.n_ciclos = 10;
-		led1.periodo = 500;
+		leds.mode = TOGGLE; //reconfiguro leds
+		leds.n_led= LED_1;
+		leds.n_ciclos = 10;
+		leds.periodo = 500;
 		
-		manejar_leds(&led1);
+		manejar_leds(&leds); //llamo la funcion y le paso la direccion de memoria de la variable estructura
 		
-		while(1){
+		while(1){ //bucle infinito para que no termine el programa
 
  
 		}
