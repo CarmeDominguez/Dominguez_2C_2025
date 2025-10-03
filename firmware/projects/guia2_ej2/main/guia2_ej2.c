@@ -48,7 +48,7 @@
 
 #define CONFIG_BLINK_PERIOD_LED_1 1000
 
-#define CONFIG_TIMER_US 1000000
+#define CONFIG_TIMER_US 1000000 //1s
 /*==================[internal data definition]===============================*/
 
 TaskHandle_t led_task_handle = NULL;
@@ -59,13 +59,24 @@ volatile bool hold = false;  // Flag para pausar/reanudar medición
 volatile bool HCRS_ON = true;
 
 /*==================[internal functions declaration]=========================*/
-void FuncTimerA(void* param){
+
+timer_config_t timer_lector = {				
+    .timer   = TIMER_A,        
+    .period  = CONFIG_TIMER_US,     
+    .func_p  = FuncTimerA,   //callback
+    .param_p = NULL            
+};
+
+// Función de interrupción del timer
+void FuncTimerA(void* param){ 
     vTaskNotifyGiveFromISR(led_task_handle, pdFALSE);    /* Envía una notificación a la tarea asociada al LED_1 */
 }
+//Cuando el timer vence, desde interrupción manda una notificación a la tarea LedTask.
+//Reemplaza el vTaskDelay por la espera de notificación
 
 static void LedTask(void *pvParameter){
     while(true){
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);    /* La tarea espera en este punto hasta recibir una notificación */
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);   /*espera en este punto hasta recibir una notificación */
         
         if (!hold && HCRS_ON) {  
 		    uint16_t distancia=HcSr04ReadDistanceInCentimeters();
@@ -111,12 +122,6 @@ static void Mantenedor(void *args) {
     hold = !hold;
 }
 
-timer_config_t timer_lector = {				
-    .timer   = TIMER_A,        
-    .period  = CONFIG_TIMER_US,     
-    .func_p  = FuncTimerA,   
-    .param_p = NULL            
-};
 
 
 /*==================[external functions definition]==========================*/
@@ -127,10 +132,12 @@ void app_main(void){
 	LcdItsE0803Init();
     SwitchesInit();
     TimerInit(&timer_lector);
+
+    //Comienzo a contar timer A
     TimerStart(TIMER_A);
 
 
-     // Activar interrupciones de teclas
+    // Activar interrupciones de teclas
     SwitchActivInt(SWITCH_1, Apagador, NULL);
     SwitchActivInt(SWITCH_2, Mantenedor, NULL);
 

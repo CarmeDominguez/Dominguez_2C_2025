@@ -35,16 +35,6 @@
 #include "switch.h"
 
 /*==================[macros and definitions]=================================*/
-// 1)Mostrar distancia medida utilizando los leds de la siguiente manera:
-
-//a) Si la distancia es menor a 10 cm, apagar todos los LEDs.
-//b) Si la distancia está entre 10 y 20 cm, encender el LED_1.
-//c) Si la distancia está entre 20 y 30 cm, encender el LED_2 y LED_1.
-//d) Si la distancia es mayor a 30 cm, encender el LED_3, LED_2 y LED_1.
-
-// 2) Mostrar la distancia medida en el display LCD de 3 dígitos.
-// 3) Usar TEC1 para activar y detener la medición.
-
 
 // Umbrales de distancia (en cm)
 #define DIST_MIN     10
@@ -53,8 +43,8 @@
 
 // Período de actualización (ms)
 #define SENSOR_PERIOD_MS   500
-
 #define CONFIG_BLINK_PERIOD_LED_1 1000
+
 /*==================[internal data definition]===============================*/
 
 TaskHandle_t led_task_handle = NULL;
@@ -127,7 +117,7 @@ void app_main(void){
     SwitchesInit();
 
 	// Crear tareas
-	xTaskCreate(&LedTask, "LED_Task", 2048, NULL, 5, &led_task_handle);
-	xTaskCreate(&Switches, "SWITCHES", 2048, NULL, 5, &switches_handle);
+	xTaskCreate(&LedTask, "LED_Task", 2048, NULL, 5, &led_task_handle); //mide la distancia y controla los leds
+	xTaskCreate(&Switches, "SWITCHES", 2048, NULL, 5, &switches_handle); //lee las teclas y actualiza los flags
 }
 /*==================[end of file]============================================*/
